@@ -186,11 +186,10 @@ $(document).keypress(function (e){
 	<div><input type="text" name="title" value="张语格应援团抽奖活动" /></div>
 
 	<label>奖项设置</label>
-	<div>每行一个奖项, 格式为竖线分隔的: 奖项名|数量|每次抽几个|奖品</div>
+	<div>每行一个奖项, 格式为竖线分隔的: 奖项名|数量</div>
 <textarea name="prizes" rows="6" cols="84">
-三等奖|4|2|美女1名/每人
-二等奖|2|2|100万美金/每人
-一等奖|1|1|10本世界名著/每人
+三等奖|4
+二等奖|2
 </textarea>
 
 	<label>候选人列表</label>
@@ -465,10 +464,10 @@ function on_open(){
 	show_current_step('活动说明');
 
 	var str = '<table align="center">';
-	str += '<tr><th>奖项</th><th>数量</th><th>奖品</th></tr>\n';
+	str += '<tr><th>奖项</th><th>数量</th></tr>\n';
 	for(var i=game.prizes.length-1; i>=0; i--){
 		var p = game.prizes[i];
-		str += '<tr><td>' + p.name + '</td><td>' + p.num + '</td><td>' + p.award + '</td></tr>\n';
+		str += '<tr><td>' + p.name + '</td><td>' + p.num + '</td></tr>\n';
 	}
 	str += '</table>';
 	print_box(str);
@@ -479,10 +478,17 @@ function on_close(){
 
 	$('#print_box').hide();
 	var str = '';
-	str += '<span><b style="font-size: 62px; background: #36f;">抽奖结束</b><span><br/>';
-	str += '<br/><br/>';
-	str += '官方网站: ';
-	str += '<a href="' + 'http://ww' + 'w.ide' + 'awu.n' + 'et/' + 'bl' + 'og/"' + '>htt' + 'p://' + 'www.id' + 'eawu' + '.net/<' + '/a>';
+	str += '<b >抽奖结束</b><br/>';
+	for(var i=game.results.length-1; i>=0; i--){
+		str +=   game.prizes[i].name+ ' &nbsp;' ;
+		var r = game.results[i];
+		for(var n=0; n<r.length; n++){
+			str += r[n] + ' &nbsp;';
+		}
+		str += '<br/>';
+	}
+	//str += '官方网站: ';
+	//str += '<a href="' + 'http://ww' + 'w.ide' + 'awu.n' + 'et/' + 'bl' + 'og/"' + '>htt' + 'p://' + 'www.id' + 'eawu' + '.net/<' + '/a>';
 	print_box(str);
 	$('#print_box').fadeIn('slow', function(){
 		$('#rotate_div').css('background', 'url(framework.gif)');
@@ -578,7 +584,7 @@ function show_current_step(str){
 		var num_a = game.prizes[game.step].num_a_time;
 		var b = (num_a+found) > all? all : (num_a+found);
 
-		var str = game.prizes[game.step].name + '(' + game.prizes[game.step].num + '个';
+		var str = game.prizes[game.step].name+ '(' + game.prizes[game.step].num + '个';
 		if(num_a != all){
 			str += ', ' + (found + 1) + '-' + b;
 		}
@@ -636,8 +642,8 @@ function save_setting(){
 		var prize = {
 			name : $.trim(ex[0]),
 			num : parseInt($.trim(ex[1])),
-			num_a_time : parseInt($.trim(ex[2])),
-			award : $.trim(ex[3])
+			num_a_time : 1,
+			//award : $.trim(ex[3])
 		};
 		game.prizes.push(prize);
 	}
