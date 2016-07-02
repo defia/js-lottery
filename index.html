@@ -195,19 +195,16 @@ $(document).keypress(function (e){
 
 	<label>候选人列表</label>
 	<div>每行一人, 或半角逗号分隔</div>
+    
+    <div><input type="text" name="start" value="1" style="width: 50px;" /> </div>
+    <div><input type="text" name="end" value="100" style="width: 50px;" /> </div>
+    <p><input type="button" value="生成" onclick="generate()" /></p>
 <textarea name="candidates" rows="6" cols="84">
-ideawu.net
-benegg
-Tom, Marry, Jim, Robin
-Lucy, Lily, Lilei, Hanmeimei
-Catherine, Linton, Lockwood
-Charly, Bill, Emily, Penny
-Rose, Jen, William, Philips
-Hitler, Stalin
+
 </textarea>
 
 	<label>跳动时间间隔</label>
-	<div><input type="text" name="interval" value="50" style="width: 50px;" /> ms</div>
+	<div><input type="text" name="interval" value="10" style="width: 50px;" /> ms</div>
 
 
 	<label>背景图片</label>
@@ -326,6 +323,18 @@ function array_del_all(list, items){
 		}
 	}
 	return arr;
+}
+
+function generate(){
+	var start=parseInt($('input[name=start]').val());
+    var end=parseInt($('input[name=end]').val());
+    var str="";
+    for(var i=start;i<end;i++){
+        str+=i+",";
+    }
+    str+=end;
+    console.log(str);
+    $('textarea[name=candidates]').val(str);
 }
 
 /**
@@ -643,7 +652,7 @@ function save_setting(){
 	}
 
 	$('#event_title span').html($('input[name=title]').val());
-	$('#tabs-1').css('background', 'url(' + $('input[name=background_image]').val() + ') no-repeat');
+	//$('#tabs-1').css('background', 'url(' + $('input[name=background_image]').val() + ') no-repeat');
 
 	game.init();
 }
